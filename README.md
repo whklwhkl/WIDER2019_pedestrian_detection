@@ -19,14 +19,30 @@ This project helps with managing the WIDER challenge data of pedestrian detectio
 ## usage  
 
 ```python
-from dataset import Dataset
-from random import choice
-import cv2
+from dataset import TrainingSet, ValidationSet, TestSet  # all have similar defs
 
-ds = Dataset()
+tr = TrainingSet()    # take TrainingSet for example
+len(tr) == 91500      # __len__ method implemented
 
-image_path = choice(ds.image_paths['train'])
-image_data = cv2.imread(image_path)
-boxes = ds.box['train'][image_path]
-ignore_boxes = ds.ignore_box['train'][image_path]
+image_path, boxes, ignore_boxes = tr[0]   # __getitem__
+# ('sur_train/sur00005.jpg',      # for TestSet, only image path is returned
+
+# [[1209.0, 538.0, 60.0, 167.0],  # each box conforms [left, top, width, height]
+#  [1094.0, 419.0, 29.0, 104.0],
+#  [1187.0, 415.0, 32.0, 99.0],
+#  [1226.0, 415.0, 26.0, 100.0],
+#  [1253.0, 423.0, 37.0, 89.0],
+#  [1239.0, 347.0, 20.0, 53.0],
+#  [1193.0, 356.0, 17.0, 49.0],
+#  [1167.0, 358.0, 30.0, 43.0],
+#  [1232.0, 343.0, 12.0, 47.0],
+#  [1215.0, 337.0, 15.0, 44.0],
+#  [1151.0, 350.0, 13.0, 38.0],
+#  [1137.0, 344.0, 14.0, 39.0],
+#  [1294.0, 338.0, 20.0, 43.0]],
+
+# [[886.0, 400.0, 98.0, 208.0],  # if there's no box, [] is returned
+# [999.0, 274.0, 259.0, 206.0],
+# [1258.0, 259.0, 213.0, 249.0],
+# [1466.0, 250.0, 280.0, 171.0]])
 ```
