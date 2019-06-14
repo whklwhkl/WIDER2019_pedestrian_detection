@@ -145,10 +145,12 @@ def pedestrian_eval(dts, gt):
     return mAP
 
 if __name__ == '__main__':
-	
-    gt_file = 'val_bbox.txt'
-    ignore_file = 'val_ignore.txt'
-    submit_file = 'submission_example.txt'
+    import sys
+
+    gt_file = 'Annotations/val_bbox.txt'
+    ignore_file = 'Annotations/val_ignore.txt'
+    # submit_file = 'submission_example.txt'
+    submit_file = sys.argv[1]
 
     check_size(submit_file)
     ignore_zones = parse_ignore_file(ignore_file)
