@@ -1,6 +1,6 @@
 import numpy as np
 import os
-import argparse
+# import argparse, json
 
 def check_size(submission_file):
     max_size = 60*1024*1024
@@ -135,6 +135,7 @@ def pedestrian_eval(dts, gt):
                     fp[i] = 1.
             else:
                 fp[i] = 1.
+        # print('official', fp.sum(), tp.sum())
         fp = np.cumsum(fp)
         tp = np.cumsum(tp)
         rec = tp / float(npos)
@@ -142,23 +143,33 @@ def pedestrian_eval(dts, gt):
         ap = compute_ap(rec, prec)
         aap.append(ap)
     mAP = np.mean(aap)
+    # print('official', aap)
     return mAP
 
-if __name__ == '__main__':
-    import sys
+from .gt import gt
+from .ignore_zones import ignore_zones
 
-    gt_file = 'Annotations/val_bbox.txt'
-    ignore_file = 'Annotations/val_ignore.txt'
+def get_score(sub_path):
+    # gt_file = 'Annotations/val_bbox.txt'
+    # ignore_file = 'Annotations/val_ignore.txt'
     # submit_file = 'submission_example.txt'
-    submit_file = sys.argv[1]
-
-    check_size(submit_file)
-    ignore_zones = parse_ignore_file(ignore_file)
-    gt = parse_gt_file(gt_file, ignore_zones)
-    dts = parse_submission_file(submit_file, ignore_zones, sorted(gt.keys()))
+    check_size(sub_path)
+    # ignore_zones = parse_ignore_file(ignore_file)
+    # gt = parse_gt_file(gt_file, ignore_zones)
+    dts = parse_submission_file(sub_path, ignore_zones, sorted(gt.keys()))
+    # import pickle
+    # json.dump(ignore_zones, open('ignore_zones.json', 'w'), indent=2)
+    # pickle.dump(gt, open('gt.pkl', 'wb'))
+    # pickle.dump(dts, open('dts.pkl', 'wb'))
     mAP = pedestrian_eval(dts, gt)
+    return mAP
 
-    out = {'Average AP': mAP}
-    print(out)
+# if __name__ == '__main__':
+#     import sys
+#
+#     mAP = get_score(sys.argv[1])
+#
+#     out = {'Average AP': mAP}
+#     print(out)
     #strings = ['{}: {}\n'.format(k, v) for k, v in out.items()]
     #open(os.path.join(output_dir, 'scores.txt'), 'w').writelines(strings)

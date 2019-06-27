@@ -1,7 +1,15 @@
 from dataset import TrainingSet
+from skimage import io
 
 
 tr = TrainingSet()
+
+for path, boxes, ignore_boxes in tr:
+    try:
+        io.imread(path)
+    except:
+        print(path)
+        break
 
 from matplotlib import pyplot as plt
 from matplotlib import patches
