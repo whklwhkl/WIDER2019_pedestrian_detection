@@ -46,3 +46,11 @@ image_path, boxes, ignore_boxes = tr[0]   # __getitem__
 # [1258.0, 259.0, 213.0, 249.0],
 # [1466.0, 250.0, 280.0, 171.0]])
 ```
+
+## evaluation
+
+```python
+from tools.evaluate import get_score
+
+get_score('your_submission.txt')
+```
